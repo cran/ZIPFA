@@ -177,7 +177,10 @@ ZIPFA <- function(X, k, tau = 0.1, cut = 0.8, tolLnlikelihood = 5e-4, iter = 20,
   }
 
   presvd <- svd(log(XNA))
-  Uold <- presvd$u[,1:k,drop=FALSE] %*% diag(presvd$d[1:k])
+  if (k==1)
+    Uold <- presvd$u[,1:k,drop=FALSE] * presvd$d[1:k]
+  else
+    Uold <- presvd$u[,1:k,drop=FALSE] %*% diag(presvd$d[1:k])
   Vold <- presvd$v[,1:k,drop=FALSE]
 
   Ufit <- vector('list', iter)
@@ -250,7 +253,10 @@ ZIPFA <- function(X, k, tau = 0.1, cut = 0.8, tolLnlikelihood = 5e-4, iter = 20,
 
     # next step
     presvd <- svd(Unew %*% t(Vnew))
-    Uold <- presvd$u[,1:k,drop=FALSE] %*% diag(presvd$d[1:k])
+    if (k==1)
+      Uold <- presvd$u[,1:k,drop=FALSE] * presvd$d[1:k]
+    else
+      Uold <- presvd$u[,1:k,drop=FALSE] %*% diag(presvd$d[1:k])
     Vold <- presvd$v[,1:k,drop=FALSE]
 
     # save answer
